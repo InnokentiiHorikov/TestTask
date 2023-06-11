@@ -1,6 +1,9 @@
+imort numpy as np
+
 from keras import Sequential, Model
 from keras import layers
 from keras import Input
+
 
 def U-net(input_layer, start_neurons):
     # 128 -> 64
@@ -66,3 +69,11 @@ def U-net(input_layer, start_neurons):
     output_layer = layers.Conv2D(1, (1, 1), padding="same", activation="sigmoid")(uconv1)
     
     return output_layer
+
+def DICE_score(pred_y, test_y, eps = 0.1):
+    pred_y, test_y = pred_y.flatten(), test_y.flatten()
+    intersection =  np.sum(np.multiply(pred_y, test_y))
+    union = np.sum(np.power(pred_y)) + np.sum(np.power(test_y)) + eps
+    dice = 2 * intersection / union 
+    
+    return dice
