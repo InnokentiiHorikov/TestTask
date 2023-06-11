@@ -10,7 +10,7 @@ def to_mask(rle):
   return plot
 
 def decode_ep(img_name, enc_pix):
-  if enc_pix = '0':
+  if enc_pix == '0':
     return img_name, np.zeroes((768,768))
   
   else:
