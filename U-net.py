@@ -77,3 +77,7 @@ def DICE_score(pred_y, test_y, eps = 0.1):
     dice = 2 * intersection / union 
     
     return dice
+
+
+if __name__  == '__main__':
+    U-net()
