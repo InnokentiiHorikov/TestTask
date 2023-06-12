@@ -14,7 +14,7 @@ rewrite formula as double point-wise product between two vectors divided by sum 
 
 
 
-![U-net arcitecture](https://myoctocat.com/assets/images/base-octocat.svg](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png)
+![U-net arcitecture](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png)
 
 
 
