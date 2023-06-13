@@ -5,6 +5,8 @@
 One of the possible solutions(and also a requirment) is U-net arcitecture. 
 
 
+Using Python-generator due to large dataset
+
 
 We want to know our prediction is accurate or not. For this we can use a DiCE score: 
 It estimates a double ratio of intersection of predicted with truth pixel-values and sum of
