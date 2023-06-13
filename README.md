@@ -16,5 +16,10 @@ rewrite formula as double point-wise product between two vectors divided by sum 
 
 ![U-net arcitecture](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png)
 
+Resolution of all images is 768x786.  786 can be divided by 32, so we can use a special case of U-net with saving shape
+of layer during convolution.
+Also in model I used a Dropout layer for better prediction perfomance
+
+
 
 
