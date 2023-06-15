@@ -1,3 +1,8 @@
+Our task is to train a neural network to detect a presence of ships on given image.
+Into input we have train data with encoded pixels. If we have NA-value, it means
+no ship on image. Otherwise, ships have been detected. 
+To write their place on image in train data have been used a encoded pixels(or rle-encoding).
+In this encoding, each odd integer represents the start pixel and each even - difference of start and end pixel in same row
 
 
 
