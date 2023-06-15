@@ -4,7 +4,15 @@ no ship on image. Otherwise, ships have been detected.
 To write their place on image in train data have been used a encoded pixels(or rle-encoding).
 In this encoding, each odd integer represents the start pixel and each even - difference of start and end pixel in same row
 
-
+Before decoding rle into masks, we have to read a data, and after that group image by name, because some pictures contains more
+than one ship.
+```
+train_data = pd.read_csv('/kaggle/input/airbus-ship-detection/train_ship_segmentations_v2.csv')
+train_data = train_data.groupby("ImageId")["EncodedPixels"].agg(EncodedPixels = lambda x: " ".join(map(str,  x)))
+train_data.reset_index("ImageId", inplace = True)
+train_data = train_data.to_numpy()
+```
+We can omit the images without any ship 'cause it wound't have any impact on ship's boundaries. 
 
 
 One of the possible solutions(and also a requirment) is U-net arcitecture. 
