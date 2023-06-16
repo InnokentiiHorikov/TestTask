@@ -1,3 +1,4 @@
+## Reading the data 
 Our task is to train a neural network to detect a presence of ships on given image.
 Into input we have train data with encoded pixels. If we have NA-value, it means
 no ship on image. Otherwise, ships have been detected. 
