@@ -214,6 +214,46 @@ Resolution of all images is 768x786.  786 can be divided by 32, so we can use a 
 of layer during convolution.
 Also in model I used a Dropout layer for better prediction perfomance
 
+## Compiling model and predicting 
+First of all, for compiling model wewill use a ADAM(stochastic gradient descent method) otimizer, for loss - DICE score loss, and for accuracy metrics - binary accuracy and DICE score
+```
+from keras.optimizers import Adam
+
+#Compiling the model
+model.compile(optimizer=Adam(1e-3, decay=1e-6), loss=DICE_score_loss, metrics=["binary_accuracy", DICE_score])
+```
+Empirically, on the best batch size of train images is 16(4x4), epochs - 8, steps per epochs - 20. 
+We will use a fit_generator method(a varient of fit-method), what using large data amount case, and
+validation data to see the accuracy on the untrained data 
+```
+gen = create_aug_gen(train_gererator(train_data, 16))
+model.fit_generator(gen, steps_per_epoch=20,
+                    epochs = 8, validation_data=(valid_x, valid_y))
+```
+**
+Epoch 1/8
+20/20 [==============================] - 88s 4s/step - loss: 0.9818 - binary_accuracy: 0.9568 - DICE_score: 0.0182 - val_loss: 0.9771 - val_binary_accuracy: 0.9953 - val_DICE_score: 0.0229 - lr: 0.0010
+Epoch 2/8
+20/20 [==============================] - 86s 4s/step - loss: 0.9443 - binary_accuracy: 0.9927 - DICE_score: 0.0557 - val_loss: 0.8907 - val_binary_accuracy: 0.9952 - val_DICE_score: 0.1095 - lr: 0.0010
+Epoch 3/8
+20/20 [==============================] - 87s 4s/step - loss: 0.8807 - binary_accuracy: 0.9928 - DICE_score: 0.1193 - val_loss: 0.8162 - val_binary_accuracy: 0.9951 - val_DICE_score: 0.1831 - lr: 0.0010
+Epoch 4/8
+20/20 [==============================] - 86s 4s/step - loss: 0.7591 - binary_accuracy: 0.9930 - DICE_score: 0.2409 - val_loss: 0.5834 - val_binary_accuracy: 0.9938 - val_DICE_score: 0.4155 - lr: 0.0010
+Epoch 5/8
+20/20 [==============================] - 84s 4s/step - loss: 0.6318 - binary_accuracy: 0.9901 - DICE_score: 0.3682 - val_loss: 0.5825 - val_binary_accuracy: 0.9909 - val_DICE_score: 0.4170 - lr: 0.0010
+Epoch 6/8
+20/20 [==============================] - 89s 4s/step - loss: 0.5506 - binary_accuracy: 0.9920 - DICE_score: 0.4494 - val_loss: 0.4326 - val_binary_accuracy: 0.9957 - val_DICE_score: 0.5669 - lr: 0.0010
+Epoch 7/8
+20/20 [==============================] - 84s 4s/step - loss: 0.5499 - binary_accuracy: 0.9933 - DICE_score: 0.4501 - val_loss: 0.4264 - val_binary_accuracy: 0.9955 - val_DICE_score: 0.5725 - lr: 0.0010
+Epoch 8/8
+20/20 [==============================] - 84s 4s/step - loss: 0.5748 - binary_accuracy: 0.9940 - DICE_score: 0.4252 - val_loss: 0.4449 - val_binary_accuracy: 0.9957 - val_DICE_score: 0.5531 - lr: 0.0010
+**
+Real DICE score is 55 percent, which means our model deals with images pretty good
+```
+pred = model.predict(first_img)
+```
+![predicted](Prediction.png)
+
 
 
 
