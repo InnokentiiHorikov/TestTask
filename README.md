@@ -164,7 +164,7 @@ If some number are false, than it would be multiplied by zero, so we obtained in
 ```
 intersection=K.sum(y_true* y_pred)
 ```
-To compute union we should compute sum of raised inpower two predicted vector and true vector
+To compute union we should compute sum of raised in power two predicted vector and true vector
 That's because in case 100% accuracy
 
 $a: y_{pred}, b: y_{true}$
