@@ -187,7 +187,7 @@ And to compute DICE scorr loss we just need to substract from 1 DICE score
 
 ## U-net arcitecture
 
-![U-net arcitecture](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png)
+![U-net arcitecture]([https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png))
 
 Resolution of all images is 768x786.  786 can be divided by 32, so we can use a special case of U-net with saving shape
 of layer during convolution.
