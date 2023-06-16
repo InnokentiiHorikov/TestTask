@@ -152,6 +152,39 @@ applying IDGs  preliminarily set the random seed
         yield next(g_x)/255.0, next(g_y)
 ```
 
+## DICE-score
+To estimate an accuracy of mask prediction we should use DICE score(and consequenlty DICE score lsss)
+We obtain predicted mask and true mask, and some small postive real number epsilon, to avoid case 0/0 
+First of all, we should flatten it from n-dimensonal tensor to 1-dimensonal array
+```
+y_true,y_pred  =K.flatten(y_true), K.flatten(y_pred)
+```
+To compute an intersection between them we can multiply one vector to another
+If some number are false, than it would be multiplied by zero, so we obtained intersetcion
+```
+intersection=K.sum(y_true* y_pred)
+```
+To compute union we should compute sum of raised inpower two predicted vector and true vector
+That's because in case 100% accuracy
+$$
+a: y_{pred}, b: y_{true}\\
+a = b: \frac{2*|ab| + \eps}{|a^2| + |b^2| + \eps} = \frac{2*|a^2| + \eps}{2*|a^2| + eps = 1} 
+$$
+```
+union  = K.sum(y_true*y_true) + K.sum(y_pred*y_pred)
+```
+And retrun DICE_score
+```
+        return(2* intersection + eps) / (union + eps)
+```
+
+And to compute DICE scorr loss we just need to substract from 1 DICE score
+```
+        return 1-DICE_score(y_true, y_pred)
+```
+
+
+
 ## U-net arcitecture
 
 ![U-net arcitecture](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png)
