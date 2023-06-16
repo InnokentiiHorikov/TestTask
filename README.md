@@ -14,7 +14,7 @@ train_data = train_data.to_numpy()
 ```
 We can omit the images without any ship 'cause it wound't have any impact on ship's boundaries. 
 
-##Decoding rle-pixels and making a mask
+## Decoding rle-pixels and making a mask
 Let's split given string on separate integers
 ```
 enc_pix = np.asarray(enc_pix.split(), dtype = np.uint32)
@@ -65,6 +65,88 @@ It estimates a double ratio of intersection of predicted with truth pixel-values
 all predicted and truth pixel-values. 
 We will use keras.flatten function to make a 1-dimensional vector from tensor, and after that we 
 rewrite formula as double point-wise product between two vectors divided by sum of their square-power(plus some epsiolon)
+
+## Generators
+One of the main problem we might face it's taking a horredous amount of RAM. 
+To avoid this problem we have to use a python generator.
+To implement, we should write a generator, what returns a image
+But we can return a stacked images beacuse of higher performance of training
+
+Creating lists for image and their corresponding masks
+```
+    out_rgb = []
+    out_mask = []
+```
+When for every name of image and mask in obtained tuple
+```
+for c_img_id, c_masks in tup:
+```
+Read the image via opencv package
+```
+            rgb_path = os.path.join(train_image_dir, c_img_id)
+            c_img = cv2.imread(rgb_path)
+```
+Expand the dimensiolity of mask by 1
+```
+        c_mask = np.expand_dims(decode_ep(c_masks), -1)
+```
+Reduct the shapes of image and mask by 3(it will slliglty affect on perfomance of training,
+but sufficient on amount of taken RAM)
+```
+        c_img = c_img[::3, ::3]
+        c_mask = c_mask[::3, ::3]
+```
+Adding the image and mask matrices in early created lists, and if some amount is not less than 
+batch size then we generate lists and resetting them
+```
+            out_rgb += [c_img]
+            out_mask += [c_mask]
+            if len(out_rgb)>=batch_size:
+                yield np.stack(out_rgb, 0)/255.0, np.stack(out_mask, 0)
+                out_rgb, out_mask=[], []
+```
+And to avoid overfitting we can generate from given image a wide amount images.
+So we can use from keras ImageDataGenerator class
+
+First of all, setting parameters as a python dictionary
+```
+        dg_args = dict(featurewise_center = False, 
+                  samplewise_center = False,
+                  rotation_range = 45, 
+                  width_shift_range = 0.1, 
+                  height_shift_range = 0.1, 
+                  shear_range = 0.01,
+                  zoom_range = [0.9, 1.25],  
+                  horizontal_flip = True, 
+                  vertical_flip = True,
+                  fill_mode = 'reflect',
+                   data_format = 'channels_last')
+```
+Than initializing for images and masks IDG
+```
+        label_gen = IDG(**dg_args)
+        
+        image_gen = IDG(**dg_args)
+```
+And for stacked images and stacked masks 
+```
+        for in_x, in_y in in_gen:
+```
+applying IDGs  preliminarily set the random seed
+```
+        seed = np.random.choice(range(9999))
+        
+        g_x = image_gen.flow(255*in_x, 
+                             batch_size = in_x.shape[0], 
+                             seed = seed, 
+                             shuffle=True)
+        g_y = image_gen.flow(in_y, 
+                             batch_size = in_x.shape[0], 
+                             seed = seed, 
+                             shuffle=True)
+
+        yield next(g_x)/255.0, next(g_y)
+```
 
 
 
