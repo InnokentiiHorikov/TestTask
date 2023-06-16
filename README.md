@@ -152,7 +152,7 @@ applying IDGs  preliminarily set the random seed
         yield next(g_x)/255.0, next(g_y)
 ```
 
-
+## U-net arcitecture
 
 ![U-net arcitecture](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png)
 
