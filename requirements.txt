@@ -1,4 +1,6 @@
+os for access to folders
 numpy for linear algebra
+matplotlib.pyplot for displaying images
+opencv for reading images
 pandas for reading csv files and work with them 
 keras for building image-processing neural network
-matplotlib for displaying images
