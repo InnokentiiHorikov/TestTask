@@ -14,6 +14,43 @@ train_data = train_data.to_numpy()
 ```
 We can omit the images without any ship 'cause it wound't have any impact on ship's boundaries. 
 
+##Decoding rle-pixels and making a mask
+Let's split given string on separate integers
+```
+enc_pix = np.asarray(enc_pix.split(), dtype = np.uint32)
+```
+After that, we create two arrays: first will contains start pixels(i.e. odd elements), second - duration of row
+```
+num_of_pix = np.array(enc_pix[::2])
+rep_of_pix = np.array(enc_pix[1::2])
+```
+The next step is creating a mask
+First of all, our mask is matrix with height and widght are 768. 
+```
+
+```
+Then we should concatenate all decoded pixels, because into output in previous step we obtained
+arrays of separate ranges.
+```
+
+```
+Substacting from all pixels 1 because of python indexing
+```
+
+```
+Than creating the mask(on start one-dimesnional array due to flexibility of assigning), by assigning  decoded-pixels 255(what means white), and other pixels - zero(black) 
+```
+        plot_mask = np.zeros(square, dtype = np.uint8)
+        plot_mask[rle] = 255
+```
+Reshaping the mask to matrix and normilizing it
+```
+        plot_mask = np.reshape(plot_mask, (size, size)).T
+        plot_mask = plot_mask / 255
+        return plot_mask 
+```
+
+And decoding by creating a range for some number to number + corresponding difference. 
 
 One of the possible solutions(and also a requirment) is U-net arcitecture. 
 
