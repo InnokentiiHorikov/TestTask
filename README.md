@@ -106,7 +106,7 @@ batch size then we generate lists and resetting them
                 out_rgb, out_mask=[], []
 ```
 
-![batched images](/assets/images/imageandmask.png)
+![batched images](blob/main/imageandmask.png)
 
 
 And to avoid overfitting we can generate from given image a wide amount images.
