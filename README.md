@@ -27,16 +27,17 @@ rep_of_pix = np.array(enc_pix[1::2])
 The next step is creating a mask
 First of all, our mask is matrix with height and widght are 768. 
 ```
-
+        size = 768
 ```
 Then we should concatenate all decoded pixels, because into output in previous step we obtained
 arrays of separate ranges.
 ```
+        rle = np.concatenate(arr_of_pix)
 
 ```
 Substacting from all pixels 1 because of python indexing
 ```
-
+        rle -= 1
 ```
 Than creating the mask(on start one-dimesnional array due to flexibility of assigning), by assigning  decoded-pixels 255(what means white), and other pixels - zero(black) 
 ```
@@ -45,6 +46,7 @@ Than creating the mask(on start one-dimesnional array due to flexibility of assi
 ```
 Reshaping the mask to matrix and normilizing it
 ```
+        square = np.power(size, 2)
         plot_mask = np.reshape(plot_mask, (size, size)).T
         plot_mask = plot_mask / 255
         return plot_mask 
