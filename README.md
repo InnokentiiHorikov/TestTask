@@ -189,7 +189,27 @@ And to compute DICE scorr loss we just need to substract from 1 DICE score
 
 ![U-net arcitecture]([https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png))
 
-Resolution of all images is 768x786.  786 can be divided by 32, so we can use a special case of U-net with saving shape
+Resolution of all images is 768x786.  786 can be divided by 32, so we can use a special case(or it better to say the imporvment) of U-net with saving shape and number of output filters increasing(or decreasing) by two on each level 
+
+### Down-scaling
+
+>     conv_i = layers.Conv2D(8*2^i, (3, 3), activation="relu", padding = 'same')(input_layer)
+>     conv_i = layers.Conv2D(8*2^i, (3, 3), activation="relu", padding = 'same')(conv_i)
+>     pool_i = layers.MaxPooling2D((2, 2))(conv_i)
+>     pool_i = layers.Dropout(0.5)(ool_i)
+
+### Middle level
+>   convm = layers.Conv2D(128, (3, 3), activation="relu", padding = 'same')(pool4)
+>   convm = layers.Conv2D(128, (3, 3), activation="relu", padding = 'same')(convm) 
+    
+### Up-scaling
+
+>  deconv_i = layers.Conv2DTranspose(64, (3, 3), strides=(2, 2), padding = 'same')(uconv_i)
+>      uconv_i = layers.concatenate([deconv_i, conv_i])
+>      uconv_i = layers.Dropout(0.5)(uconv_i)
+>      uconv_i = layers.Conv2D(64, (3, 3), activation="relu", padding = 'same')(uconv_i)
+>      uconv_i = layers.Conv2D(64, (3, 3), activation="relu", padding = 'same')(uconv_i)
+
 of layer during convolution.
 Also in model I used a Dropout layer for better prediction perfomance
 
