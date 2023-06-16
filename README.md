@@ -167,7 +167,8 @@ intersection=K.sum(y_true* y_pred)
 To compute union we should compute sum of raised inpower two predicted vector and true vector
 That's because in case 100% accuracy
 
-$a: y_{pred}, b: y_{true}\\$
+$a: y_{pred}, b: y_{true}$
+
 $a = b: \frac{2*|ab| + \epsilon }{|a^2| + |b^2| + \epsilon } = \frac{2*|a^2| + \epsilon }{2*|a^2| + epsilon} = 1 $
 ```
 union  = K.sum(y_true*y_true) + K.sum(y_pred*y_pred)
