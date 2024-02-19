@@ -1,11 +1,11 @@
 ## Reading the data 
 Our task is to train a neural network to detect a presence of ships on given image.
 Into input we have train data with encoded pixels. If we have NA-value, it means
-no ship on image. Otherwise, ships have been detected. 
+absence of ships on image. Otherwise, at least one ship has been detected. 
 To write their place on image in train data have been used a encoded pixels(or rle-encoding).
 In this encoding, each odd integer represents the start pixel and each even - difference of start and end pixel in same row
 
-Before decoding rle into masks, we have to read a data, and after that group image by name, because some pictures contains more
+Before a decoding the rle into masks, we have to read a data, and after that group the images by name, because some pictures contains more
 than one ship.
 ```
 train_data = pd.read_csv('/kaggle/input/airbus-ship-detection/train_ship_segmentations_v2.csv')
@@ -40,7 +40,7 @@ Substacting from all pixels 1 because of python indexing
 ```
         rle -= 1
 ```
-Than creating the mask(on start one-dimesnional array due to flexibility of assigning), by assigning  decoded-pixels 255(what means white), and other pixels - zero(black) 
+Then we are creating the mask(on start one-dimesnional array due to flexibility of assigning) by assigning  decoded-pixels 255(what means white), and other pixels - zero(black) 
 ```
         plot_mask = np.zeros(square, dtype = np.uint8)
         plot_mask[rle] = 255
@@ -70,10 +70,10 @@ rewrite formula as double point-wise product between two vectors divided by sum 
 ## Generators
 One of the main problem we might face it's taking a horredous amount of RAM. 
 To avoid this problem we have to use a python generator.
-To implement, we should write a generator, what returns a image
+For implementation we should write a generator, what returns a image
 But we can return a stacked images beacuse of higher performance of training
 
-Creating lists for image and their corresponding masks
+Creating the lists for image and their corresponding masks
 ```
     out_rgb = []
     out_mask = []
@@ -82,7 +82,7 @@ When for every name of image and mask in obtained tuple
 ```
 for c_img_id, c_masks in tup:
 ```
-Read the image via opencv package
+Reading the image via opencv package
 ```
             rgb_path = os.path.join(train_image_dir, c_img_id)
             c_img = cv2.imread(rgb_path)
@@ -190,7 +190,7 @@ And to compute DICE scorr loss we just need to substract from 1 DICE score
 
 ![U-net arcitecture]([https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png))
 
-Resolution of all images is 768x786.  786 can be divided by 32, so we can use a special case(or it better to say the imporvment) of U-net with saving shape and number of output filters increasing(or decreasing) by two on each level 
+Resolution of all images is 768x786.  786 can be divided by 32, so we can use a special case(or better to say the improvment) of U-net with saving shape and number of output filters increasing(or decreasing) by two on each level 
 
 ### Down-scaling
 ```
