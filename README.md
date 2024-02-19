@@ -253,7 +253,7 @@ Real DICE score is 55 percent, which means our model deals with images pretty go
 ```
 pred = model.predict(first_img)
 ```
-![predicted](Prediction.png)
+![predicted](__results___15_1.png)
 
 
 
